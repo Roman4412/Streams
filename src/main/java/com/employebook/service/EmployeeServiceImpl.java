@@ -3,6 +3,8 @@ package com.employebook.service;
 import com.employebook.Employee;
 import java.util.Comparator;
 
+import com.employebook.exceptions.EmployeeAlreadyAddedException;
+import com.employebook.exceptions.EmployeeNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -33,7 +35,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee emp = new Employee (firstName, lastname, department, salary);
         employees.put(emp.getFullName(), emp);
         if(employees.containsKey(emp.getFullName())) {
-            return new Employee("null", "null", 0, 0);
+            throw new EmployeeAlreadyAddedException();
         }
         employees.put(emp.getFullName(), emp);
         return emp;
@@ -45,8 +47,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         if(employees.containsKey(emp.getFullName())) {
             return employees.remove(emp.getFullName());
         }
-        return new Employee("null", "null", 0, 0);
-    }
+            throw new EmployeeNotFoundException();
+        }
 
     @Override
     public Employee find(String firstName, String lastname, int department, double salary)  {
@@ -54,7 +56,7 @@ public class EmployeeServiceImpl implements EmployeeService {
          if (employees.containsKey(emp.getFullName())) {
              return employees.get(emp.getFullName());
          }
-        return new Employee("null", "null", 0, 0);
+            throw new EmployeeNotFoundException();
     }
     public Collection<Employee> findAll() {
         return Collections.unmodifiableCollection(employees.values());
@@ -79,13 +81,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employees.values().stream()
                 .filter(employee -> employee.getDepartment() == department)
                 .collect(Collectors.toList());
-
     }
     @Override
-    public List<Employee> printAll() {
+    public Map<Integer, List<Employee>> printAll() {
         return employees.values().stream()
-                .sorted(Comparator.comparingInt(Employee::getDepartment))
-                .collect(Collectors.toList());
-    }
+                .collect(Collectors.groupingBy(Employee::getDepartment));
 
+
+    }
 }

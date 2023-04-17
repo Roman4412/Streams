@@ -6,28 +6,28 @@ import com.employebook.service.EmployeeServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController()
 @RequestMapping("/departments")
 public class EmployeeBookController {
     private final EmployeeService employeeService = new EmployeeServiceImpl();
 
+
     @GetMapping("/max-salary")
-    public String findMaxSalary(@RequestParam("department") int department) {
-        return employeeService.findMaxSalary(department).toString();
+    public Employee findMaxSalary(@RequestParam("department") int department) {
+        return employeeService.findMaxSalary(department);
     }
     @GetMapping("/min-salary")
-    public String findMinSalary(@RequestParam("department") int department) {
-        return employeeService.findMinSalary(department).toString();
+    public Employee findMinSalary(@RequestParam("department") int department) {
+        return employeeService.findMinSalary(department);
     }
     @GetMapping("/department-employees")
-    public String printAllDepartment(@RequestParam("department") int department) {
-        return employeeService.printAllDepartment(department).toString();
+    public List<Employee> printAllDepartment(@RequestParam("department") int department) {
+        return employeeService.printAllDepartment(department);
     }
     @GetMapping("/all")
-    public String printAll() {
-        return employeeService.printAll().toString();
-
+    public Map<Integer, List<Employee>> printAll() {
+        return employeeService.printAll();
     }
-
 }

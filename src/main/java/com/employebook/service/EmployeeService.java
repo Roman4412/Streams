@@ -3,6 +3,7 @@ package com.employebook.service;
 import com.employebook.Employee;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface EmployeeService {
@@ -11,6 +12,6 @@ public interface EmployeeService {
     Employee find(String firstName, String lastname, int department, double salary);
     Employee findMaxSalary(int department);
     Employee findMinSalary(int department);
-    List<Employee> printAllDepartment(int department);
-    List<Employee> printAll();
+    List <Employee> printAllDepartment(int department);
+    Map<Integer, List<Employee>> printAll();
 }
